@@ -1,7 +1,7 @@
 {
-  "name": "Node.js Sample",
-  "description": "RESTfull Backend in Node.js via Express",
+  "name": "RESTful + AUTH API",
+  "description": "RESTful Backend in Node.js via Express",
   "repository": "https://github.com/rexfng/restful-auth-api",
-  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "logo": "https://avatars1.githubusercontent.com/u/10051634",
   "keywords": ["node", "express", "static"]
 }
