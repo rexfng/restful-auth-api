@@ -6,18 +6,19 @@
   "keywords": ["node", "express", "static"],
   "env": {
     "MONGODB_DATABASE_URL": {
-            "description": "mLab MongoDB url"
+            "description": "See https://mlab.com/"
     },
     "EMAIL_PASS": {
-            "description": "sendgrid api key"
+            "description": "See: https://sendgrid.com/"
     },
     "IPAPI_API_KEY": {
-            "description": "sendgrid api key",
-            "required": "false"
+            "description": "See: https://ipapi.co/#api",
+            "required": false
     },
     "CORS": {
-            "description": "sendgrid api key",
-            "value": "*"
+            "description": "CORS Domain to whitelist",
+            "value": "*",
+            "required": false
     }
   }
 }
