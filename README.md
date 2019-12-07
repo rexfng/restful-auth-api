@@ -12,6 +12,7 @@
 
 ## RESTful Routes
 Endpoints are created from [@rexfng/db](https://www.npmjs.com/package/@rexfng/db) Node Module. Check for detail documentation.
+
 | Route   | Action | Description |
 |----------|:-------------|:------|
 | /:collection | GET | Get all records from collection |
@@ -22,6 +23,7 @@ Endpoints are created from [@rexfng/db](https://www.npmjs.com/package/@rexfng/db
 
 ## Auth Routes
 Endpoints are created from [@rexfng/auth](https://www.npmjs.com/package/@rexfng/auth) Node Module. Check for detail documentation.
+
 | Route   | Action | Required Parameters |
 |----------|:-------------|:------|
 | /register | POST |[username (email), password]|
