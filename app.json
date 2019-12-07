@@ -3,5 +3,13 @@
   "description": "RESTful Backend in Node.js via Express",
   "repository": "https://github.com/rexfng/restful-auth-api",
   "logo": "https://avatars1.githubusercontent.com/u/10051634",
-  "keywords": ["node", "express", "static"]
+  "keywords": ["node", "express", "static"],
+  "env": {
+    "MONGODB_DATABASE_URL": {
+            "description": "mLab MongoDB url"
+    },
+    "EMAIL_PASS": {
+            "description": "sendgrid api key"
+    }
+  }
 }
