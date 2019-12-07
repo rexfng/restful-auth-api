@@ -10,6 +10,14 @@
     },
     "EMAIL_PASS": {
             "description": "sendgrid api key"
+    },
+    "IPAPI_API_KEY": {
+            "description": "sendgrid api key",
+            "required": "false"
+    },
+    "CORS": {
+            "description": "sendgrid api key",
+            "value": "*"
     }
   }
 }
