@@ -14,9 +14,20 @@ process.env.PRIVATE_KEY = pair.private
 const Send = require('@rexfng/send')
 const _ = require('lodash')
 app.use(requestIp.mw())
-app.use(cors())
-let corsResource = _.isEmpty(process.env.CORS) ? "*" : process.env.CORS
-app.options(corsResource, cors());
+let allowedOrigins = _.isEmpty(process.env.CORS) ? ["*"] : process.env.CORS.split(',')
+app.use(cors({
+  origin: function(origin, callback){
+    // allow requests with no origin 
+    // (like mobile apps or curl requests)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 const Auth = require('@rexfng/auth')
 const authCheck = Auth.middleware.authCheck
