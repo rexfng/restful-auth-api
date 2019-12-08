@@ -22,11 +22,19 @@
     },
     "APP_NAME": {
             "description": "APP name",
-            "value": "APP",
+            "value": "APP"
     },
     "TWILIO_API_KEY": {
             "description": "Provide to enable SMS capabilities",
             "required": false
-    }
+    },
+    "AWS_ACCESS_KEY": {
+            "description": "For s3upload",
+            "required": false
+    },
+    "AWS_SECRET_KEY": {
+            "description": "For s3upload",
+            "required": false
+    } 
   }
 }
