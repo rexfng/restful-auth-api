@@ -14,7 +14,7 @@ process.env.PRIVATE_KEY = pair.private
 const Send = require('@rexfng/send')
 const _ = require('lodash')
 app.use(requestIp.mw())
-let allowedOrigins = _.isEmpty(process.env.CORS) ? ["*"] : process.env.CORS.split(',')
+let allowedOrigins = _.isEmpty(process.env.CORS) ? [] : process.env.CORS.split(',')
 app.use(cors({
   origin: function(origin, callback){
     // allow requests with no origin 
