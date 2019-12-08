@@ -50,8 +50,6 @@ app.use('/resetpassword', Auth.routes.api.resetpassword) // POST /register
 app.use('/login', Auth.routes.api.login) // POST /login
 app.use('/token', Auth.routes.api.token) // POST /token
 app.use('/passwordchange', Auth.routes.api.passwordChange) // POST /token
-app.use('/.wellknown/jwks.json', Auth.routes.api.jwks) // POST /token
-app.use('/app_create', Auth.routes.api.app_create) // POST /token
 
 if (process.env.TWILIO_API_KEY) {
     app.use('/sms/getcode', Tfa.routes.sms.getcode)
