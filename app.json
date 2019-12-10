@@ -9,7 +9,8 @@
             "description": "See https://mlab.com/"
     },
     "EMAIL_PASS": {
-            "description": "See: https://sendgrid.com/"
+            "description": "See: https://sendgrid.com/",
+            "required": false
     },
     "IPAPI_API_KEY": {
             "description": "See: https://ipapi.co/#api",
@@ -22,7 +23,8 @@
     },
     "SYSTEM_EMAIL": {
             "description": "<From> email address for reset password email",
-            "value": ""
+            "value": "",
+            "required": false
     },
     "APP_NAME": {
             "description": "APP name",

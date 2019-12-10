@@ -56,8 +56,11 @@ app.get('/',function(req,res){
     res.redirect('https://github.com/rexfng/restful-auth-api')
 })
 app.use('/register', Auth.routes.api.register) // POST /register
-app.use('/resetpassword', Auth.routes.api.resetpassword) // POST /register
-app.use('/resetpassword_confirmation', Auth.routes.api.resetpassword_confirmation) // POST /register
+if (process.env.EMAIL_PASS || process.env.SYSTEM_EMAIL) {
+    app.use('/resetpassword', Auth.routes.api.resetpassword) // POST /register
+    app.use('/resetpassword_confirmation', Auth.routes.api.resetpassword_confirmation) // POST /register
+    app.use('/', Send.routes.email)
+}
 app.use('/login', Auth.routes.api.login) // POST /login
 app.use('/token', Auth.routes.api.token) // POST /token
 app.use('/passwordchange', Auth.routes.api.passwordChange) // POST /token
@@ -70,10 +73,10 @@ if (process.env.TWILIO_API_KEY) {
 }
 app.use('/api/getcode', Tfa.routes.api.getcode)
 app.use('/api/verifycode', Tfa.routes.api.verifycode)
-app.use('/', Send.routes.email)
 app.use('/googlesheet', require('@rexfng/google-sheet-db').api.searchSheetData)
 app.use('/passwordtest', require('@rexfng/password-strength').routes.passwordTest)
 app.use('/emailtest', require('@rexfng/password-strength').routes.emailTest)
+
 
 if (process.env.AWS_ACCESS_KEY && process.env.AWS_SECRET_KEY) {
     app.use('/s3upload', s3upload)
