@@ -20,6 +20,10 @@
             "value": "*",
             "required": false
     },
+    "SYSTEM_EMAIL": {
+            "description": "<From> email address for reset password email",
+            "value": ""
+    },
     "APP_NAME": {
             "description": "APP name",
             "value": "APP"
@@ -34,6 +38,14 @@
     },
     "AWS_SECRET_KEY": {
             "description": "For s3upload",
+            "required": false
+    },
+    "REDIS_HOST": {
+            "description": "For googlesheet db routes caching",
+            "required": false
+    },
+    "REDIS_PORT": {
+            "description": "For googlesheet db routes caching",
             "required": false
     } 
   }

@@ -1,4 +1,4 @@
-// const env = require('dotenv').config()
+const env = require('dotenv').config()
 // EXPRESS SERVER
 const express = require('express')
 const app = express()
@@ -14,18 +14,14 @@ process.env.PRIVATE_KEY = pair.private
 const Send = require('@rexfng/send')
 const _ = require('lodash')
 app.use(requestIp.mw())
-let allowedOrigins = _.isEmpty(process.env.CORS) ? [] : process.env.CORS.split(',')
+var whitelist = _.isEmpty(process.env.CORS) ? ["*"] : process.env.CORS.split(',')
 app.use(cors({
-  origin: function(origin, callback){
-    // allow requests with no origin 
-    // (like mobile apps or curl requests)
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-      var msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || _.includes(whitelist, '*')) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
     }
-    return callback(null, true);
   }
 }));
 
@@ -51,6 +47,8 @@ app.use(authCheck().unless({
         '/sms/verifycode',
         '/email/getcode',
         '/verification',
+        '/.well-known/jwks.json',
+        '/app_create'
     ]
 }));
 app.get('/',function(req,res){
@@ -58,9 +56,12 @@ app.get('/',function(req,res){
 })
 app.use('/register', Auth.routes.api.register) // POST /register
 app.use('/resetpassword', Auth.routes.api.resetpassword) // POST /register
+app.use('/resetpassword_confirmation', Auth.routes.api.resetpassword_confirmation) // POST /register
 app.use('/login', Auth.routes.api.login) // POST /login
 app.use('/token', Auth.routes.api.token) // POST /token
 app.use('/passwordchange', Auth.routes.api.passwordChange) // POST /token
+app.use('/.well-known/jwks.json', Auth.routes.api.jwks) // POST /token
+app.use('/app_create', Auth.routes.api.app_create) // POST /token
 
 if (process.env.TWILIO_API_KEY) {
     app.use('/sms/getcode', Tfa.routes.sms.getcode)
@@ -71,6 +72,7 @@ app.use('/api/verifycode', Tfa.routes.api.verifycode)
 app.use('/email/getcode', Tfa.routes.email.getcode)
 app.use('/verification', Tfa.routes.email.verifycode)
 app.use('/email', Send.routes.email)
+app.use('/googlesheet', require('@rexfng/google-sheet-db').api.searchSheetData)
 
 if (process.env.AWS_ACCESS_KEY && process.env.AWS_SECRET_KEY) {
     app.use('/s3upload', s3upload)
