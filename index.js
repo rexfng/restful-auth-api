@@ -48,7 +48,8 @@ app.use(authCheck().unless({
         '/email/getcode',
         '/verification',
         '/.well-known/jwks.json',
-        '/app_create'
+        '/app_create',
+
     ]
 }));
 app.get('/',function(req,res){
@@ -69,10 +70,10 @@ if (process.env.TWILIO_API_KEY) {
 }
 app.use('/api/getcode', Tfa.routes.api.getcode)
 app.use('/api/verifycode', Tfa.routes.api.verifycode)
-app.use('/email/getcode', Tfa.routes.email.getcode)
-app.use('/verification', Tfa.routes.email.verifycode)
-app.use('/email', Send.routes.email)
+app.use('/', Send.routes.email)
 app.use('/googlesheet', require('@rexfng/google-sheet-db').api.searchSheetData)
+app.use('/passwordtest', require('@rexfng/password-strength').routes.passwordTest)
+app.use('/emailtest', require('@rexfng/password-strength').routes.emailTest)
 
 if (process.env.AWS_ACCESS_KEY && process.env.AWS_SECRET_KEY) {
     app.use('/s3upload', s3upload)
