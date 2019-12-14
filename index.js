@@ -86,8 +86,8 @@ if (process.env.AWS_ACCESS_KEY && process.env.AWS_SECRET_KEY) {
 const MongoDB = require('@rexfng/db')
 const DB = new MongoDB()
 
-app.use('/', DB.routes.get)
-app.use('/', DB.routes.gets)
-app.use('/', DB.routes.post)
-app.use('/', DB.routes.put)
-app.use('/', DB.routes.del)
+app.use('/db', DB.routes.get)
+app.use('/db', DB.routes.gets)
+app.use('/db', DB.routes.post)
+app.use('/db', DB.routes.put)
+app.use('/db', DB.routes.del)
