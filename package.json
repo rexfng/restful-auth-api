@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rexfng/auth": "^9.0.0",
+    "@rexfng/auth": "^9.1.0",
     "@rexfng/db": "^5.1.0",
     "@rexfng/google-sheet-db": "^1.3.0",
     "@rexfng/password-strength": "^1.9.0",
