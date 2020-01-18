@@ -3,7 +3,8 @@
 const express = require('express')
 const app = express()
 	  app.listen(process.env.PORT || 3000)
-
+const bodyParser = require('body-parser')
+const jsonParser = bodyParser.json()
 //ip middleware
 const requestIp = require('request-ip');
 const cors = require('cors')
@@ -13,6 +14,8 @@ process.env.PUBLIC_KEY = pair.public
 process.env.PRIVATE_KEY = pair.private
 const Send = require('@rexfng/send')
 const _ = require('lodash')
+const MongoDB = require('@rexfng/db')
+let DB = new MongoDB()
 app.use(requestIp.mw())
 var whitelist = _.isEmpty(process.env.CORS) ? ["*"] : process.env.CORS.split(',')
 app.use(cors({
@@ -47,6 +50,7 @@ app.use(authCheck().unless({
         '/sms/verifycode',
         '/email/getcode',
         '/verification',
+        '/username',
         '/.well-known/jwks.json',
         '/app_create',
 
@@ -54,6 +58,9 @@ app.use(authCheck().unless({
 }));
 app.get('/',function(req,res){
     res.redirect('https://github.com/rexfng/restful-auth-api')
+})
+app.get('/empty',function(req,res){
+    res.status(200).send('success')
 })
 app.use('/register', Auth.routes.api.register) // POST /register
 if (process.env.EMAIL_PASS || process.env.SYSTEM_EMAIL) {
@@ -76,15 +83,22 @@ app.use('/api/verifycode', Tfa.routes.api.verifycode)
 app.use('/googlesheet', require('@rexfng/google-sheet-db').api.searchSheetData)
 app.use('/passwordtest', require('@rexfng/password-strength').routes.passwordTest)
 app.use('/emailtest', require('@rexfng/password-strength').routes.emailTest)
-
+app.post('/username', jsonParser , function(req,res){
+    DB.model.find(Object.assign({"type": "users"}, req.body)).select('_id').limit(1).lean()
+        .then(function(e){
+            res.status(200).send(e)
+            console.log(e)
+        })
+        .catch(function(e){
+            res.status(500).send(e)
+            console.log(e)
+        })
+})
 
 if (process.env.AWS_ACCESS_KEY && process.env.AWS_SECRET_KEY) {
     app.use('/s3upload', s3upload)
 }
-
 // MONGODB
-const MongoDB = require('@rexfng/db')
-const DB = new MongoDB()
 
 app.use('/db', DB.routes.get)
 app.use('/db', DB.routes.gets)
