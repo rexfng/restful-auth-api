@@ -84,7 +84,7 @@ app.use('/googlesheet', require('@rexfng/google-sheet-db').api.searchSheetData)
 app.use('/passwordtest', require('@rexfng/password-strength').routes.passwordTest)
 app.use('/emailtest', require('@rexfng/password-strength').routes.emailTest)
 app.post('/username', jsonParser , function(req,res){
-    DB.model.find(Object.assign({"type": "users"}, req.body)).select('_id').limit(1).lean()
+    DB.model.find(Object.assign({"type": "users"}, req.body)).select('_id data.username').limit(1).lean()
         .then(function(e){
             res.status(200).send(e)
             console.log(e)
