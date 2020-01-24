@@ -1,4 +1,4 @@
-// const env = require('dotenv').config()
+const env = require('dotenv').config()
 // EXPRESS SERVER
 const express = require('express')
 const app = express()
@@ -12,7 +12,6 @@ const keypair = require('keypair');
   let pair = keypair({bits: 1024})
 process.env.PUBLIC_KEY = pair.public
 process.env.PRIVATE_KEY = pair.private
-const Send = require('@rexfng/send')
 const _ = require('lodash')
 const MongoDB = require('@rexfng/db')
 let DB = new MongoDB()
@@ -33,6 +32,7 @@ const authCheck = Auth.middleware.authCheck
 const bearerToken = require('express-bearer-token'); 
 const Tfa = require('@rexfng/tfa')
 const s3upload = require('@rexfng/s3upload')
+const Send = require('@rexfng/send')
 
 app.use(bearerToken());
 app.use(authCheck().unless({ 
@@ -41,8 +41,12 @@ app.use(authCheck().unless({
         '/register',
         '/login',
         '/token',
-        '/resetpassword',
-        '/resetpassword_confirmation',
+        '/email/resetpassword',
+        '/email/resetpassword_confirmation',
+        '/sms/resetpassword',
+        '/sms/resetpassword_confirmation',
+        '/voice/resetpassword',
+        '/voice/resetpassword_confirmation',
         '/passwordchange',
         '/api/getcode',
         '/api/verifycode',
@@ -51,8 +55,11 @@ app.use(authCheck().unless({
         '/email/getcode',
         '/verification',
         '/username',
+        '/sms/webhook',
         '/.well-known/jwks.json',
         '/app_create',
+        '/voice/getcode',
+        '/twixml'
 
     ]
 }));
@@ -64,9 +71,9 @@ app.get('/empty',function(req,res){
 })
 app.use('/register', Auth.routes.api.register) // POST /register
 if (process.env.EMAIL_PASS || process.env.SYSTEM_EMAIL) {
-    app.use('/resetpassword', Auth.routes.api.resetpassword) // POST /register
-    app.use('/resetpassword_confirmation', Auth.routes.api.resetpassword_confirmation) // POST /register
-    app.use('/', Send.routes.email)
+    app.use('/email/resetpassword', Auth.routes.api.resetpassword.email) // POST /register
+    app.use('/email/resetpassword_confirmation', Auth.routes.api.resetpassword.email_confirmation) // POST /register
+    app.use('/email', Send.routes.email)
 }
 app.use('/login', Auth.routes.api.login) // POST /login
 app.use('/token', Auth.routes.api.token) // POST /token
@@ -77,6 +84,17 @@ app.use('/app_create', Auth.routes.api.app_create) // POST /token
 if (process.env.TWILIO_API_KEY) {
     app.use('/sms/getcode', Tfa.routes.sms.getcode)
     app.use('/sms/verifycode', Tfa.routes.sms.verifycode)
+    app.use('/sms/send', Send.routes.sms.send)
+    app.use('/sms/webhook', Send.routes.sms.webhook)
+    app.use('/voice', Send.routes.voice)
+    app.use('/voice/getcode', Tfa.routes.voice.getcode)
+    app.use('/twixml', Send.routes.twixml)
+    app.use('/sms/resetpassword', Auth.routes.api.resetpassword.sms) // POST /register
+    app.use('/sms/resetpassword_confirmation', Auth.routes.api.resetpassword.sms_confirmation) // POST /register
+}
+if (process.env.TWILIO_AUTHY_API_KEY) {
+    app.use('/voice/resetpassword', Auth.routes.api.resetpassword.voice) // POST
+    app.use('/voice/resetpassword_confirmation', Auth.routes.api.resetpassword.voice_confirmation) //    
 }
 app.use('/api/getcode', Tfa.routes.api.getcode)
 app.use('/api/verifycode', Tfa.routes.api.verifycode)
@@ -95,8 +113,11 @@ app.post('/username', jsonParser , function(req,res){
         })
 })
 
+
 if (process.env.AWS_ACCESS_KEY && process.env.AWS_SECRET_KEY) {
-    app.use('/s3upload', s3upload)
+    app.use('/s3upload/read', s3upload.routes.read)
+    app.use('/s3upload/update', s3upload.routes.update)
+    app.use('/s3upload/delete', s3upload.routes.delete)
 }
 // MONGODB
 

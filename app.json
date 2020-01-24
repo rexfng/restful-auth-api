@@ -34,6 +34,10 @@
             "description": "Provide to enable SMS capabilities",
             "required": false
     },
+    "TWILIO_AUTHY_API_KEY":{
+            "description": "Provide to enable VOICE AUTH capabilities",
+            "required": false
+    },
     "AWS_ACCESS_KEY": {
             "description": "For s3upload",
             "required": false
