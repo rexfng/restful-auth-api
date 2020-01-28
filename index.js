@@ -1,4 +1,4 @@
-// const env = require('dotenv').config()
+const env = require('dotenv').config()
 // EXPRESS SERVER
 const express = require('express')
 const app = express()

@@ -21,11 +21,6 @@
             "value": "*",
             "required": false
     },
-    "SYSTEM_EMAIL": {
-            "description": "<From> email address for reset password email",
-            "value": "",
-            "required": false
-    },
     "APP_NAME": {
             "description": "APP name",
             "value": "APP"
