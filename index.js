@@ -1,4 +1,4 @@
-const env = require('dotenv').config()
+// const env = require('dotenv').config()
 // EXPRESS SERVER
 const express = require('express')
 const app = express()
@@ -103,7 +103,7 @@ app.post('/username', jsonParser , function(req,res){
     DB.model.find(Object.assign({"type": "users"}, req.body)).select('_id data.username').limit(1).lean()
         .then(function(e){
             res.status(200).send(e)
-            console.log(e)
+            // console.log(e)
         })
         .catch(function(e){
             res.status(500).send(e)
